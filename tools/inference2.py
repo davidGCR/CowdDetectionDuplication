@@ -179,12 +179,14 @@ def run_inference():
 
     net = build_model(args, config, Network)
 
-    dataset_dir = "/Users/davidchoqueluqueroman/Documents/DATASETS_Local/RWF-2000/frames"
+    # dataset_dir = "/Users/davidchoqueluqueroman/Documents/DATASETS_Local/RWF-2000/frames"
+    dataset_dir = "/media/david/datos/Violence DATA/RWF-2000/frames"
     # dataset_dir = "/content/DATASETS/RWF-2000/frames"
     splits = ["train/Fight", "train/NonFight", "val/Fight", "val/NonFight"]
 
     # folder_out = os.path.join("outputs", "rwf")
-    folder_out = os.path.join("/content/drive/MyDrive/VIOLENCE DATA/PersonDetections", "RWF-2000")
+    # folder_out = os.path.join("/content/drive/MyDrive/VIOLENCE DATA/PersonDetections", "RWF-2000")
+    folder_out = os.path.join("/media/david/datos/Violence DATA/PersonDetections", "RWF-2000")
     if not os.path.isdir(folder_out):
         os.mkdir(folder_out)
         for s in splits:
@@ -201,7 +203,7 @@ def run_inference():
             
             video_detections = []
             for i, img_path in enumerate(video_frames):
-                print("\t processing: {}/{}".format(i+1, len(video_frames)))
+                # print("\t processing: {}/{}".format(i+1, len(video_frames)))
                 image, pred_boxes, pred_tags_name = inference(img_path, config, net)
                 # print("pred_boxes: ", pred_boxes, pred_boxes.shape)
                 # print("scores: ", pred_boxes[:, 4], pred_boxes[:, 4].shape)

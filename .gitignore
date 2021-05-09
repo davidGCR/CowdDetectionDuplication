@@ -12,3 +12,5 @@
 **/*.jpg
 **/*.jpeg
 **/*.png
+/.env
+*.odgt
