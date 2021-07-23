@@ -19,6 +19,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 def build_model(args, config, network):
     saveDir = os.path.join('../model', args.model_dir, config.model_dir)
     model_file = os.path.join(saveDir,'{}'.format(args.resume_weights))
+    print('model_file: ', model_file)
     assert os.path.exists(model_file)
     # build network
     net = network().to(device)
@@ -139,11 +140,13 @@ def JSON_2_videoDetections(json_file):
 
 def plot_image_detections(decodedArray):
     for item in decodedArray:
-        img_path = os.path.join('/Users/davidchoqueluqueroman/Documents/DATASETS_Local/RWF-2000/frames', item['split'], item['video'], item['fname'])
+        # img_path = os.path.join('/Users/davidchoqueluqueroman/Documents/DATASETS_Local/RWF-2000/frames', item['split'], item['video'], item['fname'])
+        img_path = os.path.join('/media/david/datos/Violence DATA/RWF-2000/frames', item['split'], item['video'], item['fname'])
         image = cv2.imread(img_path, cv2.IMREAD_COLOR)
         pred_boxes = item['pred_boxes']
         pred_tags_name = item['tags']
         print(item)
+        print('iamge_size: ', image.shape) 
         if pred_boxes.shape[0] != 0:
             
             image = visual_utils.draw_boxes(image,
@@ -159,7 +162,7 @@ def plot_image_detections(decodedArray):
         key = cv2.waitKey(1000)#pauses for 3 seconds before fetching next image
         if key == 27:#if ESC is pressed, exit loop
             cv2.destroyAllWindows()
-            # break
+            break
 
 
 def run_inference():
@@ -176,7 +179,8 @@ def run_inference():
     from config import config
     from network import Network
     # inference(args, config, Network)
-
+    config.eval_image_short_size = 224
+    config.eval_image_max_size = 224
     net = build_model(args, config, Network)
 
     # dataset_dir = "/Users/davidchoqueluqueroman/Documents/DATASETS_Local/RWF-2000/frames"
@@ -186,7 +190,7 @@ def run_inference():
 
     # folder_out = os.path.join("outputs", "rwf")
     # folder_out = os.path.join("/content/drive/MyDrive/VIOLENCE DATA/PersonDetections", "RWF-2000")
-    folder_out = os.path.join("/media/david/datos/Violence DATA/PersonDetections", "RWF-2000")
+    folder_out = os.path.join("/media/david/datos/Violence DATA/PersonDetections", "RWF-2000-224")
     if not os.path.isdir(folder_out):
         os.mkdir(folder_out)
         for s in splits:
@@ -240,7 +244,8 @@ def run_inference():
         
 
 if __name__ == '__main__':
-    run_inference()
+    # run_inference()
     # decodedArray = JSON_2_videoDetections("/Users/davidchoqueluqueroman/Documents/CODIGOS_SOURCES/CrowdDet/tools/outputs/9haGKtHJ_0.json")
-    # plot_image_detections(decodedArray)
+    decodedArray = JSON_2_videoDetections("/media/david/datos/Violence DATA/PersonDetections/RWF-2000-224/train/Fight/5QqDgtwEQsI_0.json")
+    plot_image_detections(decodedArray)
 
