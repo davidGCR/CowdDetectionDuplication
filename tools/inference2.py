@@ -19,6 +19,7 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 def build_model(args, config, network):
     saveDir = os.path.join('../model', args.model_dir, config.model_dir)
     model_file = os.path.join(saveDir,'{}'.format(args.resume_weights))
+    print('model_file: ', model_file)
     assert os.path.exists(model_file)
     # build network
     net = network().to(device)
@@ -144,6 +145,7 @@ def plot_image_detections(decodedArray, dataset_path, save_path=None):
         pred_boxes = item['pred_boxes']
         pred_tags_name = item['tags']
         print(item)
+        print('iamge_size: ', image.shape) 
         if pred_boxes.shape[0] != 0:
             
             image = visual_utils.draw_boxes(image,
@@ -161,7 +163,7 @@ def plot_image_detections(decodedArray, dataset_path, save_path=None):
         key = cv2.waitKey(10)#pauses for 3 seconds before fetching next image
         if key == 27:#if ESC is pressed, exit loop
             cv2.destroyAllWindows()
-            # break
+            break
 
 
 def run_inference():
