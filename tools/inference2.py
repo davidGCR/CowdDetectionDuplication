@@ -88,7 +88,7 @@ def post_process(pred_boxes, config, scale):
 
 def get_data(img_path, short_size, max_size):
     image = cv2.imread(img_path, cv2.IMREAD_COLOR)
-    # print("image original shape: ", image.shape)
+    # print("image original : ", img_path)
     resized_img, scale = resize_img(
             image, short_size, max_size)
 
@@ -160,7 +160,7 @@ def plot_image_detections(decodedArray, dataset_path, save_path=None):
             fpath = '{}/{}.png'.format(save_path, name)
             cv2.imwrite(fpath, image)
         cv2.imshow(name, image)
-        key = cv2.waitKey(10)#pauses for 3 seconds before fetching next image
+        key = cv2.waitKey(500)#pauses for 3 seconds before fetching next image
         if key == 27:#if ESC is pressed, exit loop
             cv2.destroyAllWindows()
             break
@@ -254,6 +254,8 @@ def run_inference():
 
 if __name__ == '__main__':
     run_inference()
-    # decodedArray = JSON_2_videoDetections("/Users/davidchoqueluqueroman/Documents/DATASETS_Local/PersonDetections/RWF-2000/train/Fight/_6-B11R9FJM_2.json")
-    # plot_image_detections(decodedArray, "/Users/davidchoqueluqueroman/Documents/DATASETS_Local/RWF-2000/frames","/Users/davidchoqueluqueroman/Documents/CODIGOS_SOURCES/CowdDetectionDuplication/results")
+    # decodedArray = JSON_2_videoDetections("/Users/davidchoqueluqueroman/Documents/DATASETS_Local/PersonDetections/ucfcrime2local/anomaly/Burglary043(464-502).json")
+    # plot_image_detections(decodedArray, 
+    #                         "/Users/davidchoqueluqueroman/Documents/DATASETS_Local/UCFCrime2Local/UCFCrime2LocalClips",
+    #                         None)#"/Users/davidchoqueluqueroman/Documents/CODIGOS_SOURCES/CowdDetectionDuplication/results")
 
