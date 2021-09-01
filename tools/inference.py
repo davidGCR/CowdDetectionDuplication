@@ -13,8 +13,10 @@ def inference(args, config, network):
     # model_path
     misc_utils.ensure_dir('outputs')
     saveDir = os.path.join('../model', args.model_dir, config.model_dir)
+    # model_file = os.path.join(saveDir,
+    #         'dump-{}.pth'.format(args.resume_weights))
     model_file = os.path.join(saveDir,
-            'dump-{}.pth'.format(args.resume_weights))
+            '{}'.format(args.resume_weights))
     assert os.path.exists(model_file)
     # build network
     net = network()
@@ -101,10 +103,11 @@ def resize_img(image, short_size, max_size):
     return resized_image, scale
 
 def run_inference():
+    image = ''
     parser = argparse.ArgumentParser()
     parser.add_argument('--model_dir', '-md', default=None, required=True, type=str)
     parser.add_argument('--resume_weights', '-r', default=None, required=True, type=str)
-    parser.add_argument('--img_path', '-i', default=None, required=True, type=str)
+    parser.add_argument('--img_path', '-i', default=image, required=True, type=str)
     args = parser.parse_args()
     # import libs
     model_root_dir = os.path.join('../model/', args.model_dir)

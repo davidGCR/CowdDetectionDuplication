@@ -189,17 +189,20 @@ def run_inference():
     # dataset_dir = "/media/david/datos/Violence DATA/RWF-2000/frames"
     # dataset_dir = "/content/DATASETS/RWF-2000/frames"
     
-    dataset_dir = "/Users/davidchoqueluqueroman/Documents/DATASETS_Local/UCFCrime2Local/UCFCrime2LocalClips"
+    # dataset_dir = "/Users/davidchoqueluqueroman/Documents/DATASETS_Local/UCFCrime2Local/UCFCrime2LocalClips"
+    dataset_dir = "/Users/davidchoqueluqueroman/Documents/DATASETS_Local/RealLifeViolenceDataset/frames"
 
     # splits = ["train/Fight", "train/NonFight", "val/Fight", "val/NonFight"]
     # splits = ["violence", "nonviolence"]
-    splits = ["anomaly"]
+    # splits = ["anomaly"]
+    splits = ["Violence", "NonViolence"]
 
     # folder_out = os.path.join("outputs", "rwf")
     # folder_out = os.path.join("/content/drive/MyDrive/VIOLENCE DATA/PersonDetections", "RWF-2000")
     # folder_out = os.path.join("/media/david/datos/Violence DATA/PersonDetections", "RWF-2000-224")
     # folder_out = os.path.join("/Users/davidchoqueluqueroman/Documents/DATASETS_Local/PersonDetections", "hockey")
-    folder_out = os.path.join("/Users/davidchoqueluqueroman/Documents/DATASETS_Local/PersonDetections", "ucfcrime2local")
+    # folder_out = os.path.join("/Users/davidchoqueluqueroman/Documents/DATASETS_Local/PersonDetections", "ucfcrime2local")
+    folder_out = os.path.join("/Users/davidchoqueluqueroman/Documents/DATASETS_Local/PersonDetections", "RealLifeViolenceDataset")
     if not os.path.isdir(folder_out):
         os.mkdir(folder_out)
         for s in splits:
