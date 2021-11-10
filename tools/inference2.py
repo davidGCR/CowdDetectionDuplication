@@ -38,6 +38,8 @@ def inference(img_path, config, net, save=True):
     
     # get data
     image, resized_img, im_info = get_data(img_path, config.eval_image_short_size, config.eval_image_max_size) 
+
+    
     pred_boxes = net(resized_img, im_info)
 
     pred_boxes = pred_boxes.cpu().numpy()
@@ -190,19 +192,21 @@ def run_inference():
     # dataset_dir = "/content/DATASETS/RWF-2000/frames"
     
     # dataset_dir = "/Users/davidchoqueluqueroman/Documents/DATASETS_Local/UCFCrime2Local/UCFCrime2LocalClips"
-    dataset_dir = "/Users/davidchoqueluqueroman/Documents/DATASETS_Local/RealLifeViolenceDataset/frames"
+    # dataset_dir = "/Users/davidchoqueluqueroman/Documents/DATASETS_Local/RealLifeViolenceDataset/frames"
+    dataset_dir = "/Users/davidchoqueluqueroman/Documents/DATASETS_Local/UCFCrime_Reduced/frames"
 
     # splits = ["train/Fight", "train/NonFight", "val/Fight", "val/NonFight"]
     # splits = ["violence", "nonviolence"]
     # splits = ["anomaly"]
-    splits = ["Violence", "NonViolence"]
+    splits = ["train/abnormal", "train/normal", "test/abnormal", "test/normal"]
 
     # folder_out = os.path.join("outputs", "rwf")
     # folder_out = os.path.join("/content/drive/MyDrive/VIOLENCE DATA/PersonDetections", "RWF-2000")
     # folder_out = os.path.join("/media/david/datos/Violence DATA/PersonDetections", "RWF-2000-224")
     # folder_out = os.path.join("/Users/davidchoqueluqueroman/Documents/DATASETS_Local/PersonDetections", "hockey")
     # folder_out = os.path.join("/Users/davidchoqueluqueroman/Documents/DATASETS_Local/PersonDetections", "ucfcrime2local")
-    folder_out = os.path.join("/Users/davidchoqueluqueroman/Documents/DATASETS_Local/PersonDetections", "RealLifeViolenceDataset")
+    # folder_out = os.path.join("/Users/davidchoqueluqueroman/Documents/DATASETS_Local/PersonDetections", "RealLifeViolenceDataset")
+    folder_out = os.path.join("/Users/davidchoqueluqueroman/Documents/DATASETS_Local/PersonDetections", "UCFCrime_Reduced")
     if not os.path.isdir(folder_out):
         os.mkdir(folder_out)
         for s in splits:
