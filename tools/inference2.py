@@ -39,8 +39,15 @@ def inference(img_path, config, net, save=True):
     # get data
     image, resized_img, im_info = get_data(img_path, config.eval_image_short_size, config.eval_image_max_size) 
 
-    
+    # print("\nInputs")
+    # print("image: ", image.shape)
+    # print("resized_img: ", resized_img.size())
+    # print("im_info: ", im_info, im_info.size())
+
     pred_boxes = net(resized_img, im_info)
+
+    # print("\nOutputs")
+    # print("pred_boxes: ", pred_boxes.size())
 
     pred_boxes = pred_boxes.cpu().numpy()
     im_info = im_info.cpu().numpy()
@@ -59,6 +66,7 @@ def post_process(pred_boxes, config, scale):
         top_k = pred_boxes.shape[-1] // 6
         n = pred_boxes.shape[0]
         pred_boxes = pred_boxes.reshape(-1, 6)
+        # print('post_process: ', pred_boxes.shape)
         idents = np.tile(np.arange(n)[:,None], (1, top_k)).reshape(-1, 1)
         pred_boxes = np.hstack((pred_boxes, idents))
         keep = pred_boxes[:, 4] > config.pred_cls_threshold
@@ -90,15 +98,16 @@ def post_process(pred_boxes, config, scale):
 
 def get_data(img_path, short_size, max_size):
     image = cv2.imread(img_path, cv2.IMREAD_COLOR)
-    # print("image original : ", img_path)
+    # print("---image original : ", image.shape)
+    # print("---short_size, max_size : ", short_size, max_size)
     resized_img, scale = resize_img(
             image, short_size, max_size)
 
     original_height, original_width = image.shape[0:2]
     height, width = resized_img.shape[0:2]
-    resized_img = resized_img.transpose(2, 0, 1) #800x800
+    resized_img = resized_img.transpose(2, 0, 1) #800x800 #(3,224,224)
 
-    # print("image resize shape: ", resized_img.shape)
+    # print("---image resize shape: ", resized_img.shape)
 
     im_info = np.array([height, width, scale, original_height, original_width, 0])
     return image, torch.tensor([resized_img]).float().to(device), torch.tensor([im_info]).to(device)
@@ -111,10 +120,10 @@ def resize_img(image, short_size, max_size):
     scale = (short_size + 0.0) / im_size_min
     if scale * im_size_max > max_size:
         scale = (max_size + 0.0) / im_size_max
-    t_height, t_width = int(round(height * scale)), int(
-        round(width * scale))
-    resized_image = cv2.resize(
-            image, (t_width, t_height), interpolation=cv2.INTER_LINEAR)
+    t_height, t_width = int(round(height * scale)), int(round(width * scale))
+
+    # print("t_width, t_height: ", t_width, t_height)
+    resized_image = cv2.resize(image, (t_width, t_height), interpolation=cv2.INTER_LINEAR)
     return resized_image, scale
 
 
@@ -190,23 +199,28 @@ def run_inference():
     # dataset_dir = "/Users/davidchoqueluqueroman/Documents/DATASETS_Local/HockeyFightsDATASET/frames"
     # dataset_dir = "/media/david/datos/Violence DATA/RWF-2000/frames"
     # dataset_dir = "/content/DATASETS/RWF-2000/frames"
+
+    dataset_dir = "/Users/davidchoqueluqueroman/Documents/DATASETS_Local/CCTVFights/frames"
     
     # dataset_dir = "/Users/davidchoqueluqueroman/Documents/DATASETS_Local/UCFCrime2Local/UCFCrime2LocalClips"
     # dataset_dir = "/Users/davidchoqueluqueroman/Documents/DATASETS_Local/RealLifeViolenceDataset/frames"
-    dataset_dir = "/Users/davidchoqueluqueroman/Documents/DATASETS_Local/UCFCrime_Reduced/frames"
+    # dataset_dir = "/Users/davidchoqueluqueroman/Documents/DATASETS_Local/UCFCrime_Reduced/frames"
 
     # splits = ["train/Fight", "train/NonFight", "val/Fight", "val/NonFight"]
     # splits = ["violence", "nonviolence"]
     # splits = ["anomaly"]
-    splits = ["train/abnormal", "train/normal", "test/abnormal", "test/normal"]
+    # splits = ["train/abnormal", "train/normal", "test/abnormal", "test/normal"]
+    splits = ["fight"]
 
     # folder_out = os.path.join("outputs", "rwf")
+    # folder_out = os.path.join("/Users/davidchoqueluqueroman/Documents/DATASETS_Local/PersonDetections", "RWF-2000")
     # folder_out = os.path.join("/content/drive/MyDrive/VIOLENCE DATA/PersonDetections", "RWF-2000")
     # folder_out = os.path.join("/media/david/datos/Violence DATA/PersonDetections", "RWF-2000-224")
     # folder_out = os.path.join("/Users/davidchoqueluqueroman/Documents/DATASETS_Local/PersonDetections", "hockey")
     # folder_out = os.path.join("/Users/davidchoqueluqueroman/Documents/DATASETS_Local/PersonDetections", "ucfcrime2local")
     # folder_out = os.path.join("/Users/davidchoqueluqueroman/Documents/DATASETS_Local/PersonDetections", "RealLifeViolenceDataset")
-    folder_out = os.path.join("/Users/davidchoqueluqueroman/Documents/DATASETS_Local/PersonDetections", "UCFCrime_Reduced")
+    # folder_out = os.path.join("/Users/davidchoqueluqueroman/Documents/DATASETS_Local/PersonDetections", "UCFCrime_Reduced")
+    folder_out = os.path.join("/Users/davidchoqueluqueroman/Documents/DATASETS_Local/PersonDetections", "CCTVFights")
     if not os.path.isdir(folder_out):
         os.mkdir(folder_out)
         for s in splits:
@@ -256,7 +270,8 @@ def run_inference():
             # out_path = os.path.join("outputs", one_video)
             # if not os.path.isdir(out_path):
             #     os.mkdir(out_path)
-            videoDetections_2_JSON(os.path.join(folder_out, sp, one_video+".json"), video_detections)
+            
+            # videoDetections_2_JSON(os.path.join(folder_out, sp, one_video+".json"), video_detections)
         
 
 if __name__ == '__main__':
