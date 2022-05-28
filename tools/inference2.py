@@ -11,7 +11,8 @@ import numpy as np
 import re
 import json
 
-sys.path.insert(0, '../lib')
+# sys.path.insert(0, '../lib')
+sys.path.insert(0, '/content/CowdDetectionDuplication/lib')
 from utils import misc_utils, visual_utils, nms_utils
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -185,7 +186,9 @@ def run_inference():
     parser.add_argument('--save_path', '-sp', default="", type=str)
     args = parser.parse_args()
     # import libs
-    model_root_dir = os.path.join('../model/', args.model_dir)
+    # model_root_dir = os.path.join('../model/', args.model_dir)
+    model_root_dir = os.path.join('/content/CowdDetectionDuplication/model/', args.model_dir)
+    print('model_root_dir: ', model_root_dir)
     # model_root_dir = os.path.join(g_path,'model', args.model_dir)
     sys.path.insert(0, model_root_dir)
     from config import config
@@ -198,19 +201,19 @@ def run_inference():
     # dataset_dir = "/Users/davidchoqueluqueroman/Documents/DATASETS_Local/RWF-2000/frames"
     # dataset_dir = "/Users/davidchoqueluqueroman/Documents/DATASETS_Local/HockeyFightsDATASET/frames"
     # dataset_dir = "/media/david/datos/Violence DATA/RWF-2000/frames"
-    # dataset_dir = "/content/DATASETS/RWF-2000/frames"
+    dataset_dir = "/content/DATASETS/RWF-2000/frames"
 
-    dataset_dir = "/Users/davidchoqueluqueroman/Documents/DATASETS_Local/CCTVFights/frames"
+    # dataset_dir = "/Users/davidchoqueluqueroman/Documents/DATASETS_Local/CCTVFights/frames"
     
     # dataset_dir = "/Users/davidchoqueluqueroman/Documents/DATASETS_Local/UCFCrime2Local/UCFCrime2LocalClips"
     # dataset_dir = "/Users/davidchoqueluqueroman/Documents/DATASETS_Local/RealLifeViolenceDataset/frames"
     # dataset_dir = "/Users/davidchoqueluqueroman/Documents/DATASETS_Local/UCFCrime_Reduced/frames"
 
-    # splits = ["train/Fight", "train/NonFight", "val/Fight", "val/NonFight"]
+    splits = ["train/Fight", "train/NonFight", "val/Fight", "val/NonFight"]
     # splits = ["violence", "nonviolence"]
     # splits = ["anomaly"]
     # splits = ["train/abnormal", "train/normal", "test/abnormal", "test/normal"]
-    splits = ["fight"]
+    # splits = ["fight"]
 
     # folder_out = os.path.join("outputs", "rwf")
     # folder_out = os.path.join("/Users/davidchoqueluqueroman/Documents/DATASETS_Local/PersonDetections", "RWF-2000")
